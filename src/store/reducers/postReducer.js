@@ -3,10 +3,11 @@ const test = [
   {id:'2', title:'title2', description:'description2'}
 ]
 
-const postReducer = (state = test, action) => {
+const postReducer = (state = [], action) => {
   switch(action.type){
     case 'GET_POSTS':
-      console.log('get posts');
+      state = action.data;
+      console.log('get posts', state);
       return state;
     default: 
       return state;
