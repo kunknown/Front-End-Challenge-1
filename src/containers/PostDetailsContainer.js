@@ -1,26 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Posts from '../components/Posts';
+import React, { Component } from 'react';
+import PostDetails from '../components/PostDetails';
+import { addComment, newPost, getPost, clearPost, updatePost } from '../store/actions/postActions';
+import { connect } from 'react-redux';
 
-function PostDetailsContainer(props) {
-  const [post, updatePost] = useState(null);
-  
-  useEffect(() => {
-    if(!post){
-      axios.get('https://simple-blog-api.crew.red/posts/' + props.match.params.postId + '?_embed=comments')
-      .then(res => {
-        updatePost(res.data);
-      })
+class PostDetailsContainer extends Component {
+  constructor(props){
+    super(props);
+    this.state = {postId: parseInt(props.match.params.postId)}
+  }
+
+  componentDidMount(){
+    if(this.state.postId !== 0){
+      this.props.getPost(this.state.postId)
     }
-  })
+  }
 
-  return (
-    <div className="PostDetailsContainer">
-      {
-        post && <Posts post={post} />
-      }
-    </div>
-  )
+  componentWillUnmount(){
+    this.props.clearPost()
+  }
+
+  addCommentHandler = (e) => {
+    this.props.addComment(e, this.state.postId)
+  }
+
+  newOrUpdatePostHandler = (e) => {
+    if(this.state.postId === 0){
+      return this.props.newPost(e);
+    }
+    else{
+      return this.props.updatePost(e, this.state.postId);
+    }
+  }
+
+  render(){
+    return (
+      <div className="PostDetailsContainer">
+        {
+          this.props.currentPost && <PostDetails post={this.props.currentPost} addComment={this.addCommentHandler} postId={this.state.postId} newPost={this.newOrUpdatePostHandler}/>
+        }
+      </div>
+    )
+  }
 }
 
-export default PostDetailsContainer;
+const mapStateToProps = (state) => {
+  return {
+    currentPost: state.posts.currentPost
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addComment: (e, postId) => {dispatch(addComment(e, postId))},
+    newPost: (e) => {dispatch(newPost(e))},
+    getPost: (postId) => {dispatch(getPost(postId))},
+    clearPost: () => {dispatch(clearPost())},
+    updatePost: (e, postId) => {dispatch(updatePost(e, postId))}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetailsContainer);

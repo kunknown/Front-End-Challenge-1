@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import PostsContainer from './containers/PostsContainer';
 import PostDetailsContainer from './containers/PostDetailsContainer';
 import Navbar from './components/Navbar';
+import history from './config/history';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <div className="App">
         <Navbar />
         <Switch>
@@ -15,7 +16,7 @@ function App() {
           <Route path="/posts/:postId" component={PostDetailsContainer}/>
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
     
   );
 }
