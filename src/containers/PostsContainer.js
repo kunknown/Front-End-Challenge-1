@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getPosts, deletePost } from '../store/actions/postActions';
 import Posts from '../components/Posts';
-import { Link } from 'react-router-dom';
 
 function PostsContainer(props) {
 
@@ -14,16 +13,9 @@ function PostsContainer(props) {
 
   return (
     <div className="PostsContainer">
-      <div>
-        <Link to='/posts/0'>New Post</Link>
-      </div>
     {
-        props.posts && props.posts.map(post => {
-          return (
-            <Posts post={post} postId={post.id} key={post.id} deletePost={props.deletePost}/>
-          )
-        })
-      }
+      props.posts && <Posts posts={props.posts} deletePost={props.deletePost}/>
+    }
     </div>
   )
 }

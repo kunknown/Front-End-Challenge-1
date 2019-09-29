@@ -20,3 +20,18 @@
 .App-link {
   color: #09d3ac;
 }
+
+.container {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.container div{
+  padding: 5px;
+}
+
+.subscript {
+  padding: 1px;
+  margin: 1px;
+  font-size: 10px;
+}

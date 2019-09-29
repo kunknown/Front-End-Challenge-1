@@ -23,7 +23,6 @@ const postReducer = (state = {}, action) => {
       newState.comments.push(action.data);
       return {...state, currentPost: newState};
     case 'NEW_POST':
-      console.log('new_post', action.data);
       newState = [action.data, ...state.posts]
       return {...state, posts: newState};
     case 'DELETE_POST':
